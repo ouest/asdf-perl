@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+set -e
+
+source "$(dirname "$0")/utils.sh"
+
+install_perl() {
+  local install_type=$1
+  local version=$2
+  local install_path=$3
+
+  if [ "$install_type" != "version" ]; then
+    echoerr "Cannot install specific ref from source, sorry."
+    echoerr "For a list of available versions, see \`asdf list-all perl\`."
+    exit 1
+  fi
+  install_or_update_perl_build
+
+  echo "perl-build $version $install_path"
+  $(perl_build_path) "$version" "$install_path"
+}
+
+install_default_perl_packages() {
+  local default_perl_packages="${HOME}/.default-perl-packages"
+
+  if [ ! -f $default_perl_packages ]; then return; fi
+
+  cat "$default_perl_packages" | while read -r name; do
+    echo -ne "\nInstalling \033[33m${name}\033[39m perl package... "
+    PATH="$ASDF_INSTALL_PATH/bin:$PATH" pip install "$name" > /dev/null 2>&1 && rc=$? || rc=$?
+    if [[ $rc -eq 0 ]]; then
+      echo -e "\033[32mSUCCESS\033[39m"
+    else
+      echo -e "\033[31mFAIL\033[39m"
+    fi
+  done
+}
+
+ensure_perl_build_installed
+install_perl "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+install_default_perl_packages
