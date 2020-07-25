@@ -23,7 +23,7 @@ install_perl() {
 install_cpanm() {
   local install_path=$1
   local cpanm_path="$install_path/bin/cpanm"
-  curl -L https://cpanmin.us/ -o "$cpanm_path"
+  curl -s -L https://cpanmin.us/ -o "$cpanm_path"
   chmod +x "$cpanm_path"
 }
 
