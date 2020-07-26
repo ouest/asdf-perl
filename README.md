@@ -1,5 +1,7 @@
 # asdf-perl
 
+[![Build Status](https://travis-ci.org/ouest/asdf-perl.svg?branch=master)](https://travis-ci.org/ouest/asdf-perl)
+
 Perl plugin for asdf version manager
 
 ## Install
