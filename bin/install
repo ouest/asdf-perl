@@ -8,6 +8,7 @@ install_perl() {
   local install_type=$1
   local version=$2
   local install_path=$3
+  local concurrency=$ASDF_CONCURRENCY
 
   if [ "$install_type" != "version" ]; then
     echoerr "Cannot install specific ref from source, sorry."
@@ -17,7 +18,7 @@ install_perl() {
   install_or_update_perl_build
 
   echo "perl-build $version $install_path"
-  $(perl_build_path) "$version" "$install_path" -Dusethreads
+  $(perl_build_path) "$version" "$install_path" "-j${concurrency}" -Dusethreads
 }
 
 install_cpanm() {
