@@ -8,6 +8,7 @@ install_perl() {
   local install_type=$1
   local version=$2
   local install_path=$3
+  local concurrency=$ASDF_CONCURRENCY
 
   if [ "$install_type" != "version" ]; then
     echoerr "Cannot install specific ref from source, sorry."
@@ -16,8 +17,12 @@ install_perl() {
   fi
   install_or_update_perl_build
 
-  echo "perl-build $version $install_path"
-  $(perl_build_path) "$version" "$install_path" -Dusethreads
+  local build_args=("-j${concurrency}" -Dusethreads)
+  if is_development_version "$version"; then
+      build_args+=(-Dusedevel --symlink-devel-executables)
+  fi
+  echo "perl-build ${build_args[@]} $version $install_path"
+  $(perl_build_path) "${build_args[@]}" "$version" "$install_path"
 }
 
 install_cpanm() {
@@ -41,6 +46,33 @@ install_default_perl_modules() {
       echo -e "\033[31mFAIL\033[39m"
     fi
   done
+}
+
+is_development_version() {
+    local version=$1
+    local minor_version=$(echo "$version" | cut -d. -f2)
+
+    # Version string containing hyphen, such like "5.8.0-RC1", is development
+    # release.
+    if [[ "$version" = *-* ]]; then
+        return 0
+    fi
+
+    # Ancient version like "5.003_13", "5.004m5t1" or "5.005". There's no simple
+    # way to decide whether the version is development release or stable one.
+    # Thus assuming these are stable version as default.
+    if [[ "$minor_version" = 0* ]]; then
+        return 1
+    fi
+
+    # Here we should have a SemVer-like version consisting of 3 integers, such
+    # like "5.32.1". As we know, minor version is even if the version is a
+    # stable release.
+    if [[ $(expr "$minor_version" % 2) -eq 0 ]]; then
+        return 1
+    fi
+
+    return 0
 }
 
 ensure_perl_build_installed
