@@ -4,7 +4,7 @@ source "$(dirname "$0")/utils.sh"
 
 list_all() {
   install_or_update_perl_build
-  $(perl_build_path) --definitions | tr '\n' ' '
+  $(perl_build_path) --definitions | tac | tr '\n' ' '
 }
 
 list_all
