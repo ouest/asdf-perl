@@ -10,31 +10,29 @@ ensure_perl_build_installed() {
 
 download_perl_build() {
   echo "Downloading perl-build..." >&2
-  local plenv_url="https://github.com/tokuhirom/plenv.git"
   local perl_build_url="https://github.com/tokuhirom/Perl-Build.git"
-  git clone $plenv_url "$(plenv_path)"
-  git clone $perl_build_url "$(plenv_path)/plugins/perl-build/"
+  git clone $perl_build_url "$(perl_build_checkout)"
+}
+
+perl_build_checkout() {
+  echo "$(dirname $(dirname $0))/perl-build"
 }
 
 perl_build_path() {
-  echo "$(plenv_path)/plugins/perl-build/bin/perl-build"
+  echo "$(perl_build_checkout)/bin/perl-build"
 }
 
 update_perl_build() {
-  cd "$(plenv_path)" && git fetch && git reset --hard origin/master > /dev/null 2>&1
+  cd "$(perl_build_checkout)" && git fetch && git reset --hard origin/master > /dev/null 2>&1
 }
 
-plenv_path() {
-  echo "$(dirname $(dirname $0))/plenv"
+update_timestamp_path() {
+  echo "$(dirname $(dirname "$0"))/last_update"
 }
 
-plenv_update_timestamp_path() {
-  echo "$(dirname $(dirname "$0"))/plenv_last_update"
-}
-
-plenv_should_update() {
+should_update() {
   update_timeout=3600
-  update_timestamp_path=$(plenv_update_timestamp_path)
+  update_timestamp_path=$(update_timestamp_path)
 
   if [ ! -f "$update_timestamp_path" ]; then
     return 0
@@ -50,8 +48,8 @@ plenv_should_update() {
 install_or_update_perl_build() {
   if [ ! -f "$(perl_build_path)" ]; then
     download_perl_build
-  elif plenv_should_update; then
+  elif should_update; then
     update_perl_build
-    date +%s > "$(plenv_update_timestamp_path)"
+    date +%s > "$(update_timestamp_path)"
   fi
 }
