@@ -2,32 +2,32 @@ echoerr() {
   printf "\033[0;31m%s\033[0m" "$1" >&2
 }
 
-ensure_perl_build_installed() {
-  if [ ! -f "$(perl_build_path)" ]; then
-    download_perl_build
+ensure_perl_install_installed() {
+  if [ ! -f "$(perl_install_bin)" ]; then
+    download_perl_install
   fi
 }
 
-download_perl_build() {
-  echo "Downloading perl-build..." >&2
-  local perl_build_url="https://github.com/tokuhirom/Perl-Build.git"
-  git clone --depth 1 $perl_build_url "$(perl_build_checkout)"
+download_perl_install() {
+  echo "Downloading perl-install..." >&2
+  local perl_install_url="https://github.com/skaji/perl-install.git"
+  git clone --depth 1 $perl_install_url "$(perl_install_checkout)"
 }
 
-perl_build_checkout() {
-  echo "$(dirname $(dirname $0))/perl-build"
+perl_install_checkout() {
+  echo "$(dirname $(dirname $0))/perl-install"
 }
 
-perl_build_path() {
-  echo "$(perl_build_checkout)/bin/perl-build"
+perl_install_bin() {
+  echo "$(perl_install_checkout)/perl-install"
 }
 
-update_perl_build() {
-  cd "$(perl_build_checkout)" && git fetch && git reset --hard origin/master > /dev/null 2>&1
+update_perl_install() {
+  cd "$(perl_install_checkout)" && git fetch && git reset --hard origin/HEAD > /dev/null 2>&1
 }
 
 update_timestamp_path() {
-  echo "$(perl_build_checkout)/.git/FETCH_HEAD"
+  echo "$(perl_install_checkout)/.git/FETCH_HEAD"
 }
 
 should_update() {
@@ -45,10 +45,10 @@ should_update() {
   [ $invalidated_at -lt $current_timestamp ]
 }
 
-install_or_update_perl_build() {
-  if [ ! -f "$(perl_build_path)" ]; then
-    download_perl_build
+install_or_update_perl_install() {
+  if [ ! -f "$(perl_install_bin)" ]; then
+    download_perl_install
   elif should_update; then
-    update_perl_build
+    update_perl_install
   fi
 }

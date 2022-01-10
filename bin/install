@@ -15,14 +15,14 @@ install_perl() {
     echoerr "For a list of available versions, see \`asdf list-all perl\`."
     exit 1
   fi
-  install_or_update_perl_build
+  install_or_update_perl_install
 
-  local build_args=("-j${concurrency}" -Dusethreads)
+  local build_args=("-j=${concurrency}" -Dusethreads)
   if is_development_version "$version"; then
       build_args+=(-Dusedevel --symlink-devel-executables)
   fi
-  echo "perl-build ${build_args[@]} $version $install_path"
-  $(perl_build_path) "${build_args[@]}" "$version" "$install_path"
+  echo "perl-install ${build_args[@]} $version $install_path"
+  $(perl_install_bin) "${build_args[@]}" "$version" "$install_path"
 }
 
 install_cpanm() {
@@ -75,7 +75,7 @@ is_development_version() {
     return 0
 }
 
-ensure_perl_build_installed
+ensure_perl_install_installed
 install_perl "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
 install_cpanm "$ASDF_INSTALL_PATH"
 install_default_perl_modules
