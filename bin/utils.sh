@@ -11,7 +11,7 @@ ensure_perl_build_installed() {
 download_perl_build() {
   echo "Downloading perl-build..." >&2
   local perl_build_url="https://github.com/tokuhirom/Perl-Build.git"
-  git clone $perl_build_url "$(perl_build_checkout)"
+  git clone --depth 1 $perl_build_url "$(perl_build_checkout)"
 }
 
 perl_build_checkout() {
