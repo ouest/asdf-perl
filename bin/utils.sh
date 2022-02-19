@@ -2,56 +2,53 @@ echoerr() {
   printf "\033[0;31m%s\033[0m" "$1" >&2
 }
 
-ensure_perl_build_installed() {
-  if [ ! -f "$(perl_build_path)" ]; then
-    download_perl_build
+ensure_perl_install_installed() {
+  if [ ! -f "$(perl_install_bin)" ]; then
+    download_perl_install
   fi
 }
 
-download_perl_build() {
-  echo "Downloading perl-build..." >&2
-  local plenv_url="https://github.com/tokuhirom/plenv.git"
-  local perl_build_url="https://github.com/tokuhirom/Perl-Build.git"
-  git clone $plenv_url "$(plenv_path)"
-  git clone $perl_build_url "$(plenv_path)/plugins/perl-build/"
+download_perl_install() {
+  echo "Downloading perl-install..." >&2
+  local perl_install_url="https://github.com/skaji/perl-install.git"
+  git clone --depth 1 $perl_install_url "$(perl_install_checkout)"
 }
 
-perl_build_path() {
-  echo "$(plenv_path)/plugins/perl-build/bin/perl-build"
+perl_install_checkout() {
+  echo "$(dirname $(dirname $0))/perl-install"
 }
 
-update_perl_build() {
-  cd "$(plenv_path)" && git fetch && git reset --hard origin/master > /dev/null 2>&1
+perl_install_bin() {
+  echo "$(perl_install_checkout)/perl-install"
 }
 
-plenv_path() {
-  echo "$(dirname $(dirname $0))/plenv"
+update_perl_install() {
+  cd "$(perl_install_checkout)" && git fetch && git reset --hard origin/HEAD > /dev/null 2>&1
 }
 
-plenv_update_timestamp_path() {
-  echo "$(dirname $(dirname "$0"))/plenv_last_update"
+update_timestamp_path() {
+  echo "$(perl_install_checkout)/.git/FETCH_HEAD"
 }
 
-plenv_should_update() {
-  update_timeout=3600
-  update_timestamp_path=$(plenv_update_timestamp_path)
+should_update() {
+  local update_timeout=3600
+  local update_timestamp_path=$(update_timestamp_path)
 
   if [ ! -f "$update_timestamp_path" ]; then
     return 0
   fi
 
-  last_update=$(cat "$update_timestamp_path")
-  current_timestamp=$(date +%s)
-  invalidated_at=$(($last_update + $update_timeout))
+  local last_update="$(date -r "$update_timestamp_path" +%s)"
+  local current_timestamp="$(date +%s)"
+  local invalidated_at="$(($last_update + $update_timeout))"
 
   [ $invalidated_at -lt $current_timestamp ]
 }
 
-install_or_update_perl_build() {
-  if [ ! -f "$(perl_build_path)" ]; then
-    download_perl_build
-  elif plenv_should_update; then
-    update_perl_build
-    date +%s > "$(plenv_update_timestamp_path)"
+install_or_update_perl_install() {
+  if [ ! -f "$(perl_install_bin)" ]; then
+    download_perl_install
+  elif should_update; then
+    update_perl_install
   fi
 }
