@@ -7,7 +7,7 @@ Perl plugin for asdf version manager
 ## Install
 
 ```
-asdf plugin add perl https://github.com/ouest/asdf-perl.git
+asdf plugin add perl
 ```
 
 ## Use
