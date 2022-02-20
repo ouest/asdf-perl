@@ -33,7 +33,7 @@ install_cpanm() {
 }
 
 install_default_perl_modules() {
-  local default_perl_modules="${HOME}/.default-perl-modules"
+  local default_perl_modules="${ASDF_PERL_DEFAULT_PACKAGES_FILE:=${HOME}/.default-perl-modules}"
 
   if [ ! -f $default_perl_modules ]; then return; fi
 
