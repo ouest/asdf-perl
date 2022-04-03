@@ -19,7 +19,7 @@ install_perl() {
 
   local build_args=("-j=${concurrency}" -Dusethreads)
   if is_development_version "$version"; then
-      build_args+=(-Dusedevel --symlink-devel-executables)
+      build_args+=(-Dusedevel)
   fi
   echo "perl-install ${build_args[@]} $version $install_path"
   $(perl_install_bin) "${build_args[@]}" "$version" "$install_path"
