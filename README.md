@@ -27,3 +27,8 @@ HTML::Template
 ```
 
 You can specify a non-default location of this file by setting a `ASDF_PERL_DEFAULT_PACKAGES_FILE` variable.
+
+## Generate man pages
+
+asdf-perl can generate the perl man pages if the `ASDF_PERL_GENERATE_MAN`
+environment variable is set to any value that is not `0`.

@@ -9,6 +9,7 @@ install_perl() {
   local version=$2
   local install_path=$3
   local concurrency=$ASDF_CONCURRENCY
+  local generate_man=${ASDF_PERL_GENERATE_MAN:=0}
 
   if [ "$install_type" != "version" ]; then
     echoerr "Cannot install specific ref from source, sorry."
@@ -20,6 +21,9 @@ install_perl() {
   local build_args=("-j=${concurrency}" -Dusethreads)
   if is_development_version "$version"; then
       build_args+=(-Dusedevel)
+  fi
+  if [ "$generate_man" != 0 ]; then
+    build_args+=(--man)
   fi
   echo "perl-install ${build_args[@]} $version $install_path"
   $(perl_install_bin) "${build_args[@]}" "$version" "$install_path"
