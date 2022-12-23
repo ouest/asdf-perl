@@ -8,6 +8,7 @@ install_perl() {
   local install_type=$1
   local version=$2
   local install_path=$3
+  local build_args=$4
   local concurrency=$ASDF_CONCURRENCY
   local generate_man=${ASDF_PERL_GENERATE_MAN:=0}
 
@@ -18,7 +19,7 @@ install_perl() {
   fi
   install_or_update_perl_install
 
-  local build_args=("-j=${concurrency}" -Dusethreads)
+  build_args+=("-j=${concurrency}")
   if is_development_version "$version"; then
       build_args+=(-Dusedevel)
   fi
@@ -80,6 +81,6 @@ is_development_version() {
 }
 
 ensure_perl_install_installed
-install_perl "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
+install_perl "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH" "$ASDF_PERL_BUILD_ARGS"
 install_cpanm "$ASDF_INSTALL_PATH"
 install_default_perl_modules
