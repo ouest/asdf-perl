@@ -4,11 +4,21 @@ source "$(dirname "$0")/utils.sh"
 
 list_all() {
   install_or_update_perl_install
-  if which tac >/dev/null; then
-    $(perl_install_bin) --list-all | tac | tr '\n' ' '
+
+  local list_arg
+  if [ $ASDF_PERL_DEVEL ]; then
+    list_arg="--list-all"
   else
-    $(perl_install_bin) --list-all | tail -r | tr '\n' ' '
+    list_arg="--list"
   fi
+
+  $(perl_install_bin) $list_arg \
+    | if which tac >/dev/null; then
+      tac
+    else
+      tail -r
+    fi \
+    | tr '\n' ' '
 }
 
 list_all

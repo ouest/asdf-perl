@@ -14,6 +14,8 @@ asdf plugin add perl
 
 Check out the [asdf](https://github.com/asdf-vm/asdf) readme for instructions.
 
+Set the `ASDF_PERL_DEVEL` environment variable to list development versions of Perl in addition to stable versions.
+
 ## Default perl modules
 
 asdf-perl can automatically install a set of default perl modules right after
