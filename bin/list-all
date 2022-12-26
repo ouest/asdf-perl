@@ -12,7 +12,7 @@ list_all() {
     list_arg="--list"
   fi
 
-  $(perl_install_bin) $arg \
+  $(perl_install_bin) $list_arg \
     | if which tac >/dev/null; then
       tac
     else
