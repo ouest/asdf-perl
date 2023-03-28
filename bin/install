@@ -18,6 +18,9 @@ install_perl() {
   fi
   install_or_update_perl_install
 
+  if [[ $(printf '%s\n' "${build_args[@]}" | grep -q "^-j="; echo -n ${?} ) -eq 1 ]]; then
+    build_args+=("-j=${ASDF_CONCURRENCY}")
+  fi
   if is_development_version "$version"; then
     build_args+=(-Dusedevel)
   fi
