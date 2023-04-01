@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-source "$(dirname "$0")/utils.sh"
+current_script_path=${BASH_SOURCE[0]}
+plugin_dir=$(dirname "$(dirname "$current_script_path")")
+source "${plugin_dir}/bin/utils.sh"
 
 list_all() {
   install_or_update_perl_install
