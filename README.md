@@ -1,6 +1,6 @@
 <div align="center">
 
-# asdf-perl [![Build Status](https://travis-ci.org/ouest/asdf-perl.svg?branch=master)](https://travis-ci.org/ouest/asdf-perl)
+# asdf-perl [![Build](https://github.com/ouest/asdf-perl/actions/workflows/build.yml/badge.svg)](https://github.com/ouest/asdf-perl/actions/workflows/build.yml) [![Lint](https://github.com/ouest/asdf-perl/actions/workflows/lint.yml/badge.svg)](https://github.com/ouest/asdf-perl/actions/workflows/lint.yml)
 
 [Perl](https://www.perl.org/) plugin for the [asdf version manager](https://asdf-vm.com).
 </div>
@@ -54,7 +54,7 @@ env ASDF_PERL_GENERATE_MAN=1 asdf install perl latest
 
 ## Default perl modules
 
-asdf-perl can automatically install a set of default Perl modules right after installed Perl.  
+asdf-perl can automatically install a set of default Perl modules right after installed Perl.
 To enable this feature, provide a `$HOME/.default-perl-modules` file that lists one module Per line, for example:
 
 ```
