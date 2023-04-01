@@ -15,7 +15,8 @@ download_perl_install() {
 }
 
 perl_install_checkout() {
-  echo "$(dirname $(dirname $0))/perl-install"
+  echo "$(dirname "$(dirname "$0")")/perl-install"
+  #echo "$(dirname $(dirname $0))/perl-install"
 }
 
 perl_install_bin() {
@@ -23,7 +24,7 @@ perl_install_bin() {
 }
 
 update_perl_install() {
-  cd "$(perl_install_checkout)" && git fetch && git reset --hard origin/HEAD > /dev/null 2>&1
+  cd "$(perl_install_checkout)" && git fetch && git reset --hard origin/HEAD >/dev/null 2>&1
 }
 
 update_timestamp_path() {
@@ -32,17 +33,20 @@ update_timestamp_path() {
 
 should_update() {
   local update_timeout=3600
-  local update_timestamp_path=$(update_timestamp_path)
+  local update_timestamp_path
+  update_timestamp_path=$(update_timestamp_path)
 
   if [ ! -f "$update_timestamp_path" ]; then
     return 0
   fi
 
-  local last_update="$(date -r "$update_timestamp_path" +%s)"
-  local current_timestamp="$(date +%s)"
-  local invalidated_at="$(($last_update + $update_timeout))"
+  local last_update
+  last_update=$(date -r "$update_timestamp_path" +%s)
+  local current_timestamp
+  current_timestamp=$(date +%s)
+  local invalidated_at="$((last_update + update_timeout))"
 
-  [ $invalidated_at -lt $current_timestamp ]
+  [ "$invalidated_at" -lt "$current_timestamp" ]
 }
 
 install_or_update_perl_install() {

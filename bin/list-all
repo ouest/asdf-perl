@@ -6,19 +6,19 @@ list_all() {
   install_or_update_perl_install
 
   local list_arg
-  if [ $ASDF_PERL_DEVEL ]; then
+  if [ "$ASDF_PERL_DEVEL" ]; then
     list_arg="--list-all"
   else
     list_arg="--list"
   fi
 
-  $(perl_install_bin) $list_arg \
-    | if which tac >/dev/null; then
+  $(perl_install_bin) $list_arg |
+    if which tac >/dev/null; then
       tac
     else
       tail -r
-    fi \
-    | tr '\n' ' '
+    fi |
+    tr '\n' ' '
 }
 
 list_all

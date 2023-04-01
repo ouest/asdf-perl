@@ -2,7 +2,7 @@
 
 set -e
 
-source "$(dirname "$0")/utils.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/utils.sh"
 
 install_perl() {
   local install_type=$1
@@ -18,7 +18,10 @@ install_perl() {
   fi
   install_or_update_perl_install
 
-  if [[ $(printf '%s\n' "${build_args[@]}" | grep -q "^-j="; echo -n ${?} ) -eq 1 ]]; then
+  if [[ $(
+    printf '%s\n' "${build_args[@]}" | grep -q "^-j="
+    echo -n ${?}
+  ) -eq 1 ]]; then
     build_args+=("-j=${ASDF_CONCURRENCY}")
   fi
   if is_development_version "$version"; then
@@ -27,7 +30,7 @@ install_perl() {
   if [ "$generate_man" != 0 ]; then
     build_args+=(--man)
   fi
-  echo "perl-install ${build_args[@]} $version $install_path"
+  echo "perl-install" "${build_args[@]}" "$version" "$install_path"
   $(perl_install_bin) "${build_args[@]}" "$version" "$install_path"
 }
 
@@ -41,22 +44,23 @@ install_cpanm() {
 install_default_perl_modules() {
   local default_perl_modules="${ASDF_PERL_DEFAULT_PACKAGES_FILE:=${HOME}/.default-perl-modules}"
 
-  if [ ! -f $default_perl_modules ]; then return; fi
+  if [ ! -f "$default_perl_modules" ]; then return; fi
 
-  cat "$default_perl_modules" | while read -r name; do
+  while read -r name; do
     echo -ne "\nInstalling \033[33m${name}\033[39m perl package... "
-    PATH="$ASDF_INSTALL_PATH/bin:$PATH" cpanm "$name" > /dev/null 2>&1 && rc=$? || rc=$?
+    PATH="$ASDF_INSTALL_PATH/bin:$PATH" cpanm "$name" >/dev/null 2>&1 && rc=$? || rc=$?
     if [[ $rc -eq 0 ]]; then
       echo -e "\033[32mSUCCESS\033[39m"
     else
       echo -e "\033[31mFAIL\033[39m"
     fi
-  done
+  done <"$default_perl_modules"
 }
 
 is_development_version() {
   local version=$1
-  local minor_version=$(echo "$version" | cut -d. -f2)
+  local minor_version
+  minor_version=$(echo "$version" | cut -d. -f2)
 
   # Version string containing hyphen, such like "5.8.0-RC1", is development
   # release.
@@ -74,7 +78,7 @@ is_development_version() {
   # Here we should have a SemVer-like version consisting of 3 integers, such
   # like "5.32.1". As we know, minor version is even if the version is a
   # stable release.
-  if [[ $(expr "$minor_version" % 2) -eq 0 ]]; then
+  if [[ $((minor_version % 2)) -eq 0 ]]; then
     return 1
   fi
 
