@@ -91,3 +91,4 @@ ensure_perl_install_installed
 install_perl "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH" "$ASDF_PERL_BUILD_ARGS"
 install_cpanm "$ASDF_INSTALL_PATH"
 install_default_perl_modules
+asdf reshim perl
