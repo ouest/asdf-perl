@@ -15,7 +15,7 @@ list_all() {
   fi
 
   $(perl_install_bin) $list_arg |
-    if which tac >/dev/null; then
+    if type tac >/dev/null; then
       tac
     else
       tail -r
