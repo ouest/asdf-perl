@@ -50,7 +50,7 @@ install_default_perl_modules() {
 
   while read -r name; do
     echo -ne "\nInstalling \033[33m${name}\033[39m perl package... "
-    PATH="$ASDF_INSTALL_PATH/bin:$PATH" cpanm "$name" >/dev/null 2>&1 && rc=$? || rc=$?
+    PATH="$ASDF_INSTALL_PATH/bin:$PATH" cpanm -n "$name" >/dev/null 2>&1 && rc=$? || rc=$?
     if [[ $rc -eq 0 ]]; then
       echo -e "\033[32mSUCCESS\033[39m"
     else
