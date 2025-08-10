@@ -49,8 +49,8 @@ install_default_perl_modules() {
   if [ ! -f "$default_perl_modules" ]; then return; fi
 
   while read -r -a name; do
-    echo -ne "\nInstalling \033[33m${name}\033[39m perl package... "
-    PATH="$ASDF_INSTALL_PATH/bin:$PATH" cpanm ${ASDF_PERL_CPANM_ARGS} "${name[@]}" >/dev/null 2>&1 && rc=$? || rc=$?
+    printf '\nInstalling \033[33m%s\033[39m perl package... ' "${name[*]}"
+    PATH="$ASDF_INSTALL_PATH/bin:$PATH" cpanm "${ASDF_PERL_CPANM_ARGS}" "${name[@]}" >/dev/null 2>&1 && rc=$? || rc=$?
     if [[ $rc -eq 0 ]]; then
       echo -e "\033[32mSUCCESS\033[39m"
     else
