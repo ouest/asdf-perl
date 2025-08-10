@@ -65,3 +65,13 @@ HTML::Template
 
 You can specify a non-default location of this file by setting the `ASDF_PERL_DEFAULT_PACKAGES_FILE` environment variable.
 
+### Passing extra options to `cpanm` (optional)
+
+If you need to pass additional flags to `cpanm` when installing the default modules, set the `ASDF_PERL_CPANM_ARGS` environment variable.
+For example, to increase verbosity:
+
+```
+env ASDF_PERL_CPANM_ARGS='-v' asdf install perl latest
+```
+
+> ⚠️ Note on `-n` (`--notest`): Skipping tests can hide build or dependency issues. It’s safer to run tests by default and use `-n` only when you fully understand the implications for the specific modules you’re installing.
