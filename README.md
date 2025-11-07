@@ -12,7 +12,7 @@ Plugin:
 ```shell
 asdf plugin add perl
 # or
-asdf plugin add grex https://github.com/ouest/asdf-perl.git
+asdf plugin add perl https://github.com/ouest/asdf-perl.git
 ```
 
 Perl:
