@@ -13,6 +13,10 @@ install_perl() {
   local build_args=$4
   local generate_man=${ASDF_PERL_GENERATE_MAN:=0}
 
+  # like http://p3rl.org/Text::ParseWords#shellwords
+  eval "set -- $build_args"
+  build_args=("$@")
+
   if [ "$install_type" != "version" ]; then
     echoerr "Cannot install specific ref from source, sorry."
     echoerr "For a list of available versions, see \`asdf list-all perl\`."
