@@ -7,6 +7,13 @@
 
 * Correctly parse ASDF_PERL_BUILD_ARGS into configure arguments ([50cf952](https://www.github.com/ouest/asdf-perl/commit/50cf952f5e2692e8044ef569e421b18474057fde))
 
+### [0.3.1](https://www.github.com/ouest/asdf-perl/compare/v0.3.0...v0.3.1) (2025-12-10)
+
+
+### Bug Fixes
+
+* Correctly parse ASDF_PERL_BUILD_ARGS into configure arguments ([50cf952](https://www.github.com/ouest/asdf-perl/commit/50cf952f5e2692e8044ef569e421b18474057fde))
+
 ## [0.3.0](https://www.github.com/ouest/asdf-perl/compare/v0.2.1...v0.3.0) (2025-08-10)
 
 
