@@ -55,6 +55,7 @@ install_default_perl_modules() {
   local logdir=${TMPDIR:-/tmp}
   logdir=${logdir%/}/asdf-perl-install-$(date +%s).$$
   local logfile=$logdir/module-install.log
+  mkdir -p "$logdir"
   exec 3>"$logfile"
 
   printf '\nInstalling default perl modules - see %s for details\n' "$logfile"
