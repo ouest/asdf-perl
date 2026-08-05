@@ -53,7 +53,7 @@ install_default_perl_modules() {
   if [ ! -f "$default_perl_modules" ]; then return; fi
 
   local logdir=${TMPDIR:-/tmp}
-  logdir=${logdir%/}/asdf-perl-install=$(date +%s).$$
+  logdir=${logdir%/}/asdf-perl-install-$(date +%s).$$
   local logfile=$logdir/module-install.log
   exec 3>"$logfile"
 
