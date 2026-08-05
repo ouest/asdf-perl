@@ -52,15 +52,21 @@ install_default_perl_modules() {
 
   if [ ! -f "$default_perl_modules" ]; then return; fi
 
+  local logdir=${TMPDIR:-/tmp}
+  logdir=${logdir%/}/asdf-perl-install=$(date +%s).$$
+  local logfile=$logdir/module-install.log
+  exec 3>"$logfile"
+
+  printf '\nInstalling default perl modules - see %s for details\n' "$logfile"
   while read -r -a name; do
     printf '\nInstalling \033[33m%s\033[39m perl package... ' "${name[*]}"
-    PATH="$ASDF_INSTALL_PATH/bin:$PATH" cpanm ${ASDF_PERL_CPANM_ARGS} "${name[@]}" >/dev/null 2>&1 && rc=$? || rc=$?
-    if [[ $rc -eq 0 ]]; then
+    if PATH="$ASDF_INSTALL_PATH/bin:$PATH" cpanm ${ASDF_PERL_CPANM_ARGS} "${name[@]}" >&3 2>&1; then
       echo -e "\033[32mSUCCESS\033[39m"
     else
       echo -e "\033[31mFAIL\033[39m"
     fi
   done <"$default_perl_modules"
+  exec 3>&1
 }
 
 is_development_version() {
