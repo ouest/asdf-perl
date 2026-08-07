@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+# This download callback is no-op because perl-install does not provide a way to
+# download Perl without compiling or installing it.
